@@ -15,9 +15,11 @@ The raw data gotten from the ADC is displayed on QT and the final calculated Bea
 ## Installation
 
 From the RPi, clone this archive:
-```git clone https://github.com/FourierFencing/HeartRateMonitor.git``` 
+```git clone https://github.com/FourierFencing/HeartRateMonitor.git```
+
 Open the directory
 ```cd HeartRateMonitor```
+
 Then compile the code
 ```qmake```
 ```make```
