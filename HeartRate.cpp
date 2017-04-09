@@ -45,7 +45,7 @@
 			  pOut = samples;
 
 
-			 Signal = ADCSetup.adcRead(pulsePin);              // read the Pulse Sensor
+			 Signal = ADCSetup.adcRead(pulsePin);    //#TODO Fix the adcRead          // read the Pulse Sensor
 			 currentTime = int(time.time()*1000);
 			 sampleCounter += currentTime - lastTime;
 			 lastTime = currentTime;                         // keep track of the time in mS with this variable
