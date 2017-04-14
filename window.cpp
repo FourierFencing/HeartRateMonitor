@@ -6,7 +6,7 @@
 
 Window::Window() : gain(5), count(0)
 {
-	setup();
+	adcReader2->setup(); //set-up adcReader2
 
 	// set up the initial plot data
 	for( int index=0; index<plotDataSize; ++index )
@@ -64,7 +64,7 @@ void Window::timerEvent( QTimerEvent * )
 //	{
        // 	inVal =  (adcReader->getSample());
 		//currently it's not very complicated and readData is just a function without a class. 
-		double inVal = gain * readData(); //readData() is a function of adcReader2
+		double inVal = gain * adcReader2->readData(); //readData() is a function of adcReader2
 		++count;
 		//inVal = (1.25 + (1.25 * (inVal/32767)) - 0.75)/0.00125 - 502.5;
 

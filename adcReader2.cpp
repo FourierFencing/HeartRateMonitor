@@ -29,7 +29,7 @@ static int myFd ;
 // -ce1  = spi analogChannel 1, default:  0
 // -d   = differential analogChannel input, default: single ended
  
-void loadSpiDriver()
+void adcReader2::loadSpiDriver() //not in header
 {
     if (system("gpio load spi") == -1)
     {
@@ -38,7 +38,7 @@ void loadSpiDriver()
     }
 }
  
-void spiSetup (int spiChannel)
+void adcReader2::spiSetup (int spiChannel) //not in header
 {
     if ((myFd = SPISetup (spiChannel, 1000000)) < 0)
     {
@@ -47,7 +47,7 @@ void spiSetup (int spiChannel)
     }
 }
  
-int myAnalogRead(int spiChannel,int channelConfig,int analogChannel)
+int adcReader2::myAnalogRead(int spiChannel,int channelConfig,int analogChannel) //not in header
 {
     if(analogChannel<0 || analogChannel>7)
         return -1;
@@ -58,16 +58,18 @@ int myAnalogRead(int spiChannel,int channelConfig,int analogChannel)
 }
 
 
-void setup()
+void adcReader2::setup() //added to header
+ //do i need void?
 {
 
 	wiringPiSetup();
 	spiSetup(0);
 //	running = TRUE;
 	fprintf(stderr,"We are running!\n");
+	
 }
 
-int readData()
+int adcReader2::readData() //protected in header! therefore needs :: to excecute as a thread?
 {
 	return myAnalogRead(0, 8, 1-1);
 }
