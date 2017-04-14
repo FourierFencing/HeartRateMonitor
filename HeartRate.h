@@ -1,5 +1,5 @@
-#ifndef HEARTRATE
-#define HEARTRATE
+#ifndef ADCREADER
+#define ADCREADER
 
 #include <QThread>
 

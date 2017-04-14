@@ -1,5 +1,5 @@
 #include "window.h"
-#include "HeartRate.h"
+#include "adcReader.h"
 
 #include <cmath>  // for sine stuff
 
@@ -55,16 +55,16 @@ Window::Window() : gain(5), count(0)
 	// At the moment it doesn't do anything else than
 	// running in an endless loop and which prints out "tick"
 	// every second.
-	HeartRate = new HeartRate();
-	HeartRate->start();
+	adcReader = new HeartRate();
+	adcReader->start();
 }
 
 Window::~Window() {
 	// tells the thread to no longer run its endless loop
-	HeartRate->quit();
+	adcReader->quit();
 	// wait until the run method has terminated
-	HeartRate->wait();
-	delete HeartRate;
+	adcReader->wait();
+	delete adcReader;
 }
 
 void Window::timerEvent( QTimerEvent * )
@@ -72,9 +72,9 @@ void Window::timerEvent( QTimerEvent * )
 // For test
 
         double inVal = 0;
-        while(HeartRate->hasSample())
+        while(adcReader->hasSample())
 	{
-        	inVal =  (HeartRate->getSample());
+        	inVal =  (adcReader->getSample());
 
 		
 		//inVal = (1.25 + (1.25 * (inVal/32767)) - 0.75)/0.00125 - 502.5;
