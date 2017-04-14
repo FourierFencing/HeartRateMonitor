@@ -55,16 +55,16 @@ Window::Window() : gain(5), count(0)
 	// At the moment it doesn't do anything else than
 	// running in an endless loop and which prints out "tick"
 	// every second.
-	adcreader = new ADCreader();
-	adcreader->start();
+	HeartRate = new HeartRate();
+	HeartRate->start();
 }
 
 Window::~Window() {
 	// tells the thread to no longer run its endless loop
-	adcreader->quit();
+	HeartRate->quit();
 	// wait until the run method has terminated
-	adcreader->wait();
-	delete adcreader;
+	HeartRate->wait();
+	delete HeartRate;
 }
 
 void Window::timerEvent( QTimerEvent * )
@@ -72,9 +72,9 @@ void Window::timerEvent( QTimerEvent * )
 // For test
 
         double inVal = 0;
-        while(adcreader->hasSample())
+        while(HeartRate->hasSample())
 	{
-        	inVal =  (adcreader->getSample());
+        	inVal =  (HeartRate->getSample());
 
 		
 		//inVal = (1.25 + (1.25 * (inVal/32767)) - 0.75)/0.00125 - 502.5;
