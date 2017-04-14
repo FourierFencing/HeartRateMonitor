@@ -63,12 +63,12 @@ void setup()
 
 	wiringPiSetup();
 	spiSetup(0);
-	running = TRUE;
+//	running = TRUE;
 	fprintf(stderr,"We are running!\n");
 }
 
 int readData()
 {
-	myAnalogRead(0, 8, 1-1);
+	return myAnalogRead(0, 8, 1-1);
 }
 

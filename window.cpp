@@ -60,13 +60,13 @@ Window::Window() : gain(5), count(0)
 	//adcReader->start();
 }
 
-// Window::~Window() {
+ Window::~Window() {
 	// tells the thread to no longer run its endless loop
 	//adcReader->quit();
 	// wait until the run method has terminated
 	//adcReader->wait();
 	//delete adcReader;
-//}
+}
 
 void Window::timerEvent( QTimerEvent * )
 {
