@@ -66,7 +66,7 @@ Window::Window() : gain(5), count(0)
 	// wait until the run method has terminated
 	//adcReader->wait();
 	//delete adcReader;
-}
+//}
 
 void Window::timerEvent( QTimerEvent * )
 {
@@ -91,7 +91,7 @@ void Window::timerEvent( QTimerEvent * )
 
         	// set the thermometer value
         	thermo->setValue( inVal + 10 );
-	}
+	//}
 }
 
 
