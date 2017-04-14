@@ -6,10 +6,12 @@
 	#include <linux/spi/spidev.h>
 	#include <time.h>
 	#include <assert.h>
-
+	#include "HeartRate.h"
 
 	#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 	#define MAX_SAMPLES 65536
+	//#define TRUE                (1==1)
+	//#define FALSE               (!TRUE)
 
 	volatile int rate[10];                    // array to hold last ten IBI values
 	volatile unsigned long sampleCounter = 0;          // used to determine pulse timing
@@ -21,12 +23,12 @@
 	volatile int BPM;                   // int that holds raw Analog in 0. updated every 2mS
 	volatile int Signal;                // holds the incoming raw data
 
-	volatile boolean firstBeat = true;        // used to seed rate array so we startup with reasonable BPM
-	volatile boolean secondBeat = false;      // used to seed rate array so we startup with reasonable BPM
+	int firstBeat = TRUE;        // used to seed rate array so we startup with reasonable BPM
+	int secondBeat = FALSE;      // used to seed rate array so we startup with reasonable BPM
 
 	int IBI = 600;
-	volatile boolean Pulse = false;          # "True" when User's live heartbeat is detected. "False" when not a "live beat". 
-    lastTime = int(time.time()*1000);
+	int Pulse = FALSE;          // "True" when User's live heartbeat is detected. "False" when not a "live beat". 
+    	lastTime = int(time.time()*1000);
 		
 	void HeartRate::run()
 	{
@@ -81,13 +83,12 @@
 				  if(firstBeat){                         // if it's the first time we found a beat, if firstBeat == TRUE
 					firstBeat = false;                   // clear firstBeat flag
 					secondBeat = true;                   // set the second beat flag
-					sei();                               // enable interrupts again
 					return;                              // IBI value is unreliable so discard it
 				  }
 
 
 				  // keep a running total of the last 10 IBI values
-				  word runningTotal = 0;                  // clear the runningTotal variable
+				  long runningTotal = 0;                  // clear the runningTotal variable
 
 				  for(int i=0; i<=8; i++){                // shift data in the rate array
 					rate[i] = rate[i+1];                  // and drop the oldest IBI value
