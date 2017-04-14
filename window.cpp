@@ -1,5 +1,5 @@
 #include "window.h"
-#include "adcReader.h"
+#include "adcReader2.h"
 
 #include <cmath>  // for sine stuff
 
@@ -20,6 +20,7 @@ Window::Window() : gain(5), count(0)
 	thermo->setRange(0, 20);
 	thermo->show();
 
+	setup();
 
 	// set up the initial plot data
 	for( int index=0; index<plotDataSize; ++index )
@@ -55,28 +56,29 @@ Window::Window() : gain(5), count(0)
 	// At the moment it doesn't do anything else than
 	// running in an endless loop and which prints out "tick"
 	// every second.
-	adcReader = new HeartRate();
-	adcReader->start();
+	//adcReader = new HeartRate();
+	//adcReader->start();
 }
 
-Window::~Window() {
+// Window::~Window() {
 	// tells the thread to no longer run its endless loop
-	adcReader->quit();
+	//adcReader->quit();
 	// wait until the run method has terminated
-	adcReader->wait();
-	delete adcReader;
+	//adcReader->wait();
+	//delete adcReader;
 }
 
 void Window::timerEvent( QTimerEvent * )
 {
 // For test
 
-        double inVal = 0;
-        while(adcReader->hasSample())
-	{
-        	inVal =  (adcReader->getSample());
+       // double inVal = 0;
+       // while(adcReader->hasSample())
+//	{
+       // 	inVal =  (adcReader->getSample());
 
-		
+		double inVal = gain * readData();
+		++count;
 		//inVal = (1.25 + (1.25 * (inVal/32767)) - 0.75)/0.00125 - 502.5;
 
 	
