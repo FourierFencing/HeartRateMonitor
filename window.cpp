@@ -15,10 +15,10 @@ Window::Window() : gain(5), count(0)
 	//connect( knob, SIGNAL(valueChanged(double)), SLOT(setGain(double)) );
 
 	// set up the thermometer
-	thermo = new QwtThermo; 
-	thermo->setFillBrush( QBrush(Qt::red) );
-	thermo->setRange(0, 20);
-	thermo->show();
+//	thermo = new QwtThermo; 
+//	thermo->setFillBrush( QBrush(Qt::red) );
+//	thermo->setRange(0, 20);
+//	thermo->show();
 
 	setup();
 
@@ -42,7 +42,7 @@ Window::Window() : gain(5), count(0)
 	// set up the layout - knob above thermometer
 	vLayout = new QVBoxLayout;
 //	vLayout->addWidget(knob);
-	vLayout->addWidget(thermo);
+//	vLayout->addWidget(thermo);
 
 	// plot to the left of knob and thermometer
 	hLayout = new QHBoxLayout;
@@ -90,7 +90,7 @@ void Window::timerEvent( QTimerEvent * )
 
 
         	// set the thermometer value
-        	thermo->setValue( inVal + 10 );
+//        	thermo->setValue( inVal + 10 );
 	//}
 }
 
