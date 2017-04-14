@@ -10,7 +10,7 @@ TARGET = QwtExample
 
 LIBS += -lqwt -lm -lbcm2835 -lrt -lwiringPi
 
-HEADERS += HeartRate.h
+HEADERS += HeartRate.h ADCSetup.h SPISetup.h
 
-SOURCES += HeartRate.cpp
-
+SOURCES += HeartRate.cpp ADCSetup.cpp SPISetup.cpp
+ 

@@ -8,7 +8,7 @@
 
 #include <QBoxLayout>
 
-#include "adcreader.h"
+#include "HeartRate.h"
 
 // class definition 'Window'
 class Window : public QWidget
@@ -46,7 +46,7 @@ private:
 	double gain;
 	int count;
 
-	ADCreader *adcreader;
+	HeartRate *HeartRate;
 };
 
 #endif // WINDOW_H

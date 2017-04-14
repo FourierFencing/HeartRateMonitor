@@ -12,8 +12,8 @@
 #include <errno.h>
 #include <wiringPi.h>
 
-#include "SPISetup"
-#include "ADCSetup"
+#include "SPISetup.h"
+#include "ADCSetup.h"
 #include "HeartRate.h"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
@@ -31,17 +31,16 @@ volatile int P =512;                      // used to find peak in pulse wave, se
 volatile int T = 512;                     // used to find trough in pulse wave, seeded
 volatile int thresh = 530;                // used to find instant moment of heart beat, seeded
 volatile int amp = 0;                   // used to hold amplitude of pulse waveform, seeded
-int lastBeatTime = 0;
-int sampleCounter = 0;
 volatile int BPM;                   // int that holds raw Analog in 0. updated every 2mS
 volatile int Signal;                // holds the incoming raw data
 
 int firstBeat = TRUE;        // used to seed rate array so we startup with reasonable BPM
 int secondBeat = FALSE;      // used to seed rate array so we startup with reasonable BPM
+int blinkPin = 22;
 
 int IBI = 600;
 int Pulse = FALSE;          // "True" when User's live heartbeat is detected. "False" when not a "live beat". 
-lastTime = int(time.time()*1000);
+unsigned long lastTime = (int)time(NULL);
 
 static int myFd ;
  
@@ -98,7 +97,7 @@ void HeartRate::run()
 
 
 			Signal = myAnalogRead(0, 8, 1-1);    //#TODO Fix the adcRead          // read the Pulse Sensor
-			currentTime = int(time.time()*1000);
+			unsigned long currentTime = (int)time(NULL);
 			sampleCounter += currentTime - lastTime;
 			lastTime = currentTime;                         // keep track of the time in mS with this variable
 			int N = sampleCounter - lastBeatTime;       // monitor the time since the last beat to avoid noise
@@ -186,7 +185,7 @@ int HeartRate::getSample()
 	pOut = samples;
 	else
 	pOut++;
-	return value;
+	return Signal;
 }
 
 

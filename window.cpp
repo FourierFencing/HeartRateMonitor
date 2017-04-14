@@ -1,5 +1,5 @@
 #include "window.h"
-#include "adcreader.h"
+#include "HeartRate.h"
 
 #include <cmath>  // for sine stuff
 
