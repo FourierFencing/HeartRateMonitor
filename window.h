@@ -46,7 +46,7 @@ private:
 	double gain;
 	int count;
 
-	//HeartRate *adcReader;
+	adcReader2 *adcReader;//adcReader2 is the class thingy
 };
 
 #endif // WINDOW_H
