@@ -35,3 +35,21 @@ Then compile the code
 
 1. ```startx ./HeartRateMonitor```
 2. Start the Heart Rate Monitor app on Android device and connect to "raspberry pi"
+
+
+## Sources
+
+Code adapted from arudino community 
+-https://github.com/WorldFamousElectronics/PulseSensor_Amped_Arduino
+
+Previous projects proved useful
+-https://github.com/tianyiran02/RTEM_weightscale
+-https://github.com/katterek/MultiADC
+
+Bernd Porr's GitHub also useful
+-https://github.com/berndporr/qwt-example
+-https://github.com/berndporr/rpi_AD7705_test_software
+
+Nice source for SPI
+-http://www.raspberry-projects.com/pi/programming-in-c/spi/using-the-spi-interface
+
