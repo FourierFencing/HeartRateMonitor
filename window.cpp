@@ -6,13 +6,13 @@
 
 Window::Window() : gain(5), count(0)
 {
-	knob = new QwtKnob;
+	//knob = new QwtKnob;
 	// set up the gain knob
-	knob->setValue(gain);
+	//knob->setValue(gain);
 
 	// use the Qt signals/slots framework to update the gain -
 	// every time the knob is moved, the setGain function will be called
-	connect( knob, SIGNAL(valueChanged(double)), SLOT(setGain(double)) );
+	//connect( knob, SIGNAL(valueChanged(double)), SLOT(setGain(double)) );
 
 	// set up the thermometer
 	thermo = new QwtThermo; 
@@ -41,7 +41,7 @@ Window::Window() : gain(5), count(0)
 
 	// set up the layout - knob above thermometer
 	vLayout = new QVBoxLayout;
-	vLayout->addWidget(knob);
+//	vLayout->addWidget(knob);
 	vLayout->addWidget(thermo);
 
 	// plot to the left of knob and thermometer
