@@ -1,6 +1,6 @@
 
 #include <wiringPi.h>
-#include <SPISetup.h>
+#include "SPISetup.h"
 
 #include "ADCSetup.h"
 

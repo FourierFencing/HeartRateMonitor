@@ -52,7 +52,7 @@ public:
 	void run();
 
 protected: 
-	void readData(); //shouldn't be able to do this from the outside
+	int readData(); //shouldn't be able to do this from the outside
 
 
 private: 
