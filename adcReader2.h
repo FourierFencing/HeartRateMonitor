@@ -56,10 +56,10 @@ public:
 protected: 
 //	int readData(); //shouldn't be able to do this from the outside
 
-
 private: 
 	bool running;
-	void pabort(const char *s);
+
+		void pabort(const char *s);
 	//functions that are used inside the .cpp
 	void loadSpiDriver();
 	void spiSetup (int spiChannel);

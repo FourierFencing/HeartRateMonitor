@@ -47,28 +47,38 @@ iirThread :: iirThread()
   //pointer for outgoing data (IIR)
   pOutIIR = samplesIIR;
   running = TRUE;
+		adcReader = new adcReader2();
+		adcReader->start();
+
 	fprintf(stderr,"We are running iirThread!\n");
 }
 
 void iirThread::run()
 {
-	while(running){
+	fprintf(stderr,"We are running iirThread!\n");
+	while(running)
+	{
+//		fprintf(stderr,"We're running to glory\n");
 		if(adcReader->hasSample()) //if we've not caught up with adcReader (pOut != pIn) then we take a sample
 	  	{
+//			fprintf(stderr,"stil here\n");
 			int adcValue = adcReader->getSample();
 			float valueIIR = fL.filter(adcValue); //pointer to class is set up as adcReader in our .h, NOT adcReader2
 			*pInIIR = valueIIR;                            //put input value in current position pointed to by Pin
+//			fprintf(stderr,"On this day we fight for glory\n");
 			if (pInIIR == (&samplesIIR[MAX_SAMPLES-1])) //if the sample index is at end of buffer
 			  	pInIIR = samplesIIR;                      //start at beginning of buffer again
 			else
 				pInIIR++;                                 //else, go to next index
-	  	}
+//			fprintf(stderr,"still running\n");	  	
+		}
+//		fprintf(stderr,"Why we no run?\n");
 	}
 }
 
 void iirThread::quit()
 {
-	running = false;
+	running =FALSE;
 	exit(0);
 }
 void iirThread::pabort(const char *s)

@@ -134,7 +134,9 @@ void adcReader2::run()
 			//(sizeof(samples)/sizeof(*samples))
 			pIn = samples; //start at beginning of buffer again
 		else
-			pIn++;		//else, go to next index
+			pIn++;	
+//		fprintf(stderr,"adcsampling\n");
+		//else, go to next index
 		//no end if needed?
 	//	fprintf(stderr,"We got a sample! %i\n",value); //check to see what sample we get (and if we get it)
         	//int valueIIR = b;

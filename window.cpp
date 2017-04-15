@@ -102,8 +102,8 @@ Window::Window() : gain(5), count(0)  //why do we still need gain? We can take i
 	setLayout(hLayout);
 //	setLayout(vLayout2);
 //	fprintf(stderr,"I am about to create adcReader2\n");//stderror prints to a different output than default printf 
-	adcReader = new adcReader2();
-	adcReader->start();
+//	adcReader = new adcReader2();
+//	adcReader->start();
 	//debug: 
 //	fprintf(stderr,"I just created adcReader2\n"); 
 	//end debug;
@@ -117,12 +117,12 @@ Window::Window() : gain(5), count(0)  //why do we still need gain? We can take i
 //	fprintf(stderr,"I'm deleting adcReader\n");
 	//end debug;
 	IirThread->quit();
-	adcReader->quit();
+//	adcReader->quit();
 	// wait until the run method has terminated
 	IirThread->wait();
-	adcReader->wait();
+//	adcReader->wait();
 	delete IirThread;
-	delete adcReader;
+//	delete adcReader;
 	 
 }
 
@@ -144,7 +144,7 @@ void Window::timerEvent( QTimerEvent * )
 		//plotResample = false;
 		//}
 
-        double inVal =0;
+        int inVal =0;
 	//double inVal2 = 0;
 	count = 0;
 //	int plot_buffer[plotDataSize];

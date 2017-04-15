@@ -28,9 +28,11 @@ public:
 	void run();
 	
 protected: 
+
 		//nothing.. it's useless right?
 private: 
 	bool running;
+
 	void pabort(const char *s); //don't think we use this.
 	//don't currently have any private functions
 	//probably include fft stuff here
@@ -60,9 +62,9 @@ private:
 	
 	//set up filter constants
 	static const float samplingrate = 100000; // Sample rate in Hz
-  	static const float centre_frequency_L = 10500; //The centre frequency of the fencer's lame
+  	static const float centre_frequency_L = 5000; //The centre frequency of the fencer's lame
   	static const float centre_frequency_W = 13500; //The centre frequency of the fencer's weapon guard
-  	static const float frequency_width = 1000;  //Width of both frequencies
+  	static const float frequency_width = 100;  //Width of both frequencies
 	
 	adcReader2 *adcReader;//adcReader is a pointer of type adcReader2 
 };
