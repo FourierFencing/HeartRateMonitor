@@ -112,6 +112,7 @@ int main(){ //to be setup
 //		outW2 = ADCreader::filter(i, &fW2); //gives a single frequency output of fW2 if it exists
 //		outL1 = ADCreader::filter(i, &fL1); //gives a single frequency output of fL1 if it exists
 		float b = fL2.filter(i);
+		printf("Input=%f\n", b);
 //		outL2 = filter(i, &fL2); //gives a single frequency output of fL2 if it exists
 
 		//Then thresholding & truthtable
