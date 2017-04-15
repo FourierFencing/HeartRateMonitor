@@ -89,17 +89,21 @@ int readData()
 //EG, In setup  we have:
 
 int main(){ //to be setup
+	wiringPiSetup();
+	spiSetup(0);
 	const int order = 3;
-	Iir::Butterworth::LowPass<order> fL2;
+	Iir::Butterworth::BandPass<order> fL2;
 	const float samplingrate = 100000; // Hz
+	const float centre_frequency_L2 = 13500;
+	const float frequency_width_L2 = 3000;
 //	const float cutoff_frequency_W1 = 10000; // Hz
 //	const float cutoff_frequency_W2 = 10000; // Hz
 //	const float cutoff_frequency_L1 = 10000; // Hz
-	const float cutoff_frequency_L2 = 20000; // Hz
+//	const float cutoff_frequency_L2 = 20000; // Hz
 //	fW1.setup (order, samplingrate, cutoff_frequency_W1);
 //	fW2.setup (order, samplingrate, cutoff_frequency_W2);
 //	fL1.setup (order, samplingrate, cutoff_frequency_L1);
-	fL2.setup (order, samplingrate, cutoff_frequency_L2);
+	fL2.setup (order, samplingrate, centre_frequency_L2, frequency_width_L2);
 //	fW1.reset();
 //	fW2.reset();
 //	fL1.reset();
@@ -112,7 +116,7 @@ int main(){ //to be setup
 //		outW2 = ADCreader::filter(i, &fW2); //gives a single frequency output of fW2 if it exists
 //		outL1 = ADCreader::filter(i, &fL1); //gives a single frequency output of fL1 if it exists
 		float b = fL2.filter(i);
-		printf("Input=%d\n", i);
+		printf("Input=%f\n", b);
 //		outL2 = filter(i, &fL2); //gives a single frequency output of fL2 if it exists
 
 		//Then thresholding & truthtable
