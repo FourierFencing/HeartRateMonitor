@@ -95,7 +95,7 @@ int main(){ //to be setup
 //	const float cutoff_frequency_W1 = 10000; // Hz
 //	const float cutoff_frequency_W2 = 10000; // Hz
 //	const float cutoff_frequency_L1 = 10000; // Hz
-	const float cutoff_frequency_L2 = 10000; // Hz
+	const float cutoff_frequency_L2 = 20000; // Hz
 //	fW1.setup (order, samplingrate, cutoff_frequency_W1);
 //	fW2.setup (order, samplingrate, cutoff_frequency_W2);
 //	fL1.setup (order, samplingrate, cutoff_frequency_L1);
@@ -112,7 +112,7 @@ int main(){ //to be setup
 //		outW2 = ADCreader::filter(i, &fW2); //gives a single frequency output of fW2 if it exists
 //		outL1 = ADCreader::filter(i, &fL1); //gives a single frequency output of fL1 if it exists
 		float b = fL2.filter(i);
-		printf("Input=%f\n", b);
+		printf("Input=%d\n", i);
 //		outL2 = filter(i, &fL2); //gives a single frequency output of fL2 if it exists
 
 		//Then thresholding & truthtable
