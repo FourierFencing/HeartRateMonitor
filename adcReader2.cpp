@@ -12,6 +12,10 @@
 #include <errno.h>
 #include <wiringPi.h>
 
+
+#include <Iir.h>
+#include <Butterworth.h>
+
 #include "SPISetup.h"
 #include "ADCSetup.h"
 #include "adcReader2.h"
@@ -69,6 +73,46 @@ void setup()
 
 int readData()
 {
-	return myAnalogRead(0, 8, 1-1);
+	return myAnalogRead(0, 8, 1-1); //
 }
 
+int ADCreader::filter(int sample_in, char** f)
+{
+	float b = f.filter(sample_in);   //let's hope that the state of each filter can be remembered seperately. 
+					//what retains it's values after exciting this function? 
+					//For simplicity, i could just put this line in main. 
+					//still need to work out buffer stuff
+}
+
+
+//the char should point to the filter class object that has already been set-up. 
+//in this way, we can have multiple filter threads running using different filter classes. 
+//EG, In setup  we have:
+
+int main(){ //to be setup
+ 
+	Iir::Butterworth::LowPass<order> fW1, fW2, fL1, fL2;
+	const float samplingrate = 100000; // Hz
+//	const float cutoff_frequency_W1 = 10000; // Hz
+//	const float cutoff_frequency_W2 = 10000; // Hz
+//	const float cutoff_frequency_L1 = 10000; // Hz
+	const float cutoff_frequency_L2 = 10000; // Hz
+//	fW1.setup (order, samplingrate, cutoff_frequency_W1);
+//	fW2.setup (order, samplingrate, cutoff_frequency_W2);
+//	fL1.setup (order, samplingrate, cutoff_frequency_L1);
+	fL2.setup (order, samplingrate, cutoff_frequency_L2);
+//	fW1.reset();
+//	fW2.reset();
+//	fL1.reset();
+	fL2.reset();
+	//this should be in run()
+	while(1){
+		i = ReadData();
+//		outW1 = ADCreader::filter(i, &fW1); //gives a single frequency output of fW1 if it exists
+//		outW2 = ADCreader::filter(i, &fW2); //gives a single frequency output of fW2 if it exists
+//		outL1 = ADCreader::filter(i, &fL1); //gives a single frequency output of fL1 if it exists
+		outL2 = ADCreader::filter(i, &fL2); //gives a single frequency output of fL2 if it exists
+
+		//Then thresholding & truthtable
+		}
+}
