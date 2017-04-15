@@ -75,11 +75,11 @@ adcReader2::adcReader2() //added to header
 	pOut = samples;
 
         //set up ringbuffer (IIR)
-        samplesIIR = new int[MAX_SAMPLES];
+//        samplesIIR = new int[MAX_SAMPLES];
         // pointer for incoming data (IIR)
-        pInIIR = samplesIIR;
+  //      pInIIR = samplesIIR;
         //pointer for outgoing data (IIR)
-        pOutIIR = samplesIIR;
+    //    pOutIIR = samplesIIR;
 
 
 	wiringPiSetup();

@@ -148,9 +148,9 @@ void Window::timerEvent( QTimerEvent * )
 	//double inVal2 = 0;
 	count = 0;
 //	int plot_buffer[plotDataSize];
-     while((IirThread->hasSample())) //remains true while we're not at end of buffer
+     while((IirThread->hasIIRSample())) //remains true while we're not at end of buffer
 	{
-        inVal = gain * (IirThread->getSample()); //gets sample from the buffer
+        inVal = gain * (IirThread->getIIRSample()); //gets sample from the buffer
 //	count++;
 //	plot_buffer[count%plotDataSize] = inVal; 
 	}

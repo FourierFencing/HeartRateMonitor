@@ -20,22 +20,23 @@
 //this is the IIR class - iirThread.cpp
 //This implements a seperate thread that takes the ADC data and converts it to IIR
 // this might also implement FFT stuff, idk
+#define MAX_SAMPLES 65536
 
 iirThread :: iirThread()
 {
   int ret=0; //noone knows why, but it makes me feel good.
   
   //setting up filter stuff
-  const int order = 3;  //order of 3 for the filter
-  Iir::Butterworth::BandPass<order> fL;  //using a Bandpass filter to detect frequencies from fencer's lame
-  Iir::Butterworth::BandPass<order> fW;  //using a Bandpass filter to detect frequencies from fencer's lame
+//  const int order = 3;  //order of 3 for the filter
+//  Iir::Butterworth::BandPass<order> fL; 
+ // Iir::Butterworth::BandPass<order> fW;  //using a Bandpass filter to detect frequencies from fencer's lame
 	//these are set in header now
  // const float samplingrate = 100000; // Sample rate in Hz
  // const float centre_frequency_L = 10500; //The centre frequency of the fencer's lame
  // const float centre_frequency_W = 13500; //The centre frequency of the fencer's weapon guard
  // const float frequency_width = 1000;  //Width of both frequencies
-  fL.setup (order, samplingrate, centre_frequency_L, frequency_width);  //Setup
-  fW.setup (order, samplingrate, centre_frequency_W, frequency_width);
+  fL.setup(order, samplingrate, centre_frequency_L, frequency_width);  //Setup
+  fW.setup(order, samplingrate, centre_frequency_W, frequency_width);
   fL.reset();  //reset
   fW.reset();
   
@@ -54,7 +55,8 @@ void iirThread::run()
 	while(running){
 		if(adcReader->hasSample()) //if we've not caught up with adcReader (pOut != pIn) then we take a sample
 	  	{
-			float valueIIR = fL.filter(adcReader->getSample()); //pointer to class is set up as adcReader in our .h, NOT adcReader2
+			int adcValue = adcReader->getSample();
+			float valueIIR = fL.filter(adcValue); //pointer to class is set up as adcReader in our .h, NOT adcReader2
 			*pInIIR = valueIIR;                            //put input value in current position pointed to by Pin
 			if (pInIIR == (&samplesIIR[MAX_SAMPLES-1])) //if the sample index is at end of buffer
 			  	pInIIR = samplesIIR;                      //start at beginning of buffer again

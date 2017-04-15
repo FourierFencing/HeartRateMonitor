@@ -4,7 +4,7 @@
 #include <QThread> //needed for multithreading
 #include <stdint.h> //because we're using uint8_t
 #include "adcReader2.h" 
-
+#include <Iir.h>
 //The class is started in main program as a thread
 // adcreader -> start();
 //which is then running until the function
@@ -34,8 +34,14 @@ private:
 	void pabort(const char *s); //don't think we use this.
 	//don't currently have any private functions
 	//probably include fft stuff here
-	
-	//data collected
+	static const int order = 3;  //order of 3 for the filter
+
+	//no idea if this will work in the way we want
+	Iir::Butterworth::BandPass<order> fL; 
+ 	Iir::Butterworth::BandPass<order> fW;  //using a Bandpass filter to detect frequencies from fencer's lame
+
+
+
 	int *samplesIIR; //actually is used to store each data value
 	//this is our ring buffer
 
@@ -53,10 +59,10 @@ private:
 	// this is why we use hasSample() as a condition
 	
 	//set up filter constants
-	const float samplingrate = 100000; // Sample rate in Hz
-  const float centre_frequency_L = 10500; //The centre frequency of the fencer's lame
-  const float centre_frequency_W = 13500; //The centre frequency of the fencer's weapon guard
-  const float frequency_width = 1000;  //Width of both frequencies
+	static const float samplingrate = 100000; // Sample rate in Hz
+  	static const float centre_frequency_L = 10500; //The centre frequency of the fencer's lame
+  	static const float centre_frequency_W = 13500; //The centre frequency of the fencer's weapon guard
+  	static const float frequency_width = 1000;  //Width of both frequencies
 	
 	adcReader2 *adcReader;//adcReader is a pointer of type adcReader2 
 };
