@@ -143,22 +143,15 @@ int adcReader2::visualizeIIR()
 	const int order = 3;  //order of 3 for the filter
 	Iir::Butterworth::BandPass<order> fL1, fL2;  //using a Bandpass filter to detect frequencies from fencer's lame
 	const float samplingrate = 100000; // Sample rate in Hz
-	const float centre_frequency_L1 = 10500; //The centre frequency of fencer 1 lame
-	const float centre_frequency_L2 = 13500; //The centre frequency of fencer 2 lame
+	const float centre_frequency_L = 10500; //The centre frequency of the fencer's lame
+	const float centre_frequency_W = 13500; //The centre frequency of the fencer's weapon guard
 	const float frequency_width = 3000;  //Width of both frequencies
 	fL1.setup (order, samplingrate, centre_frequency_L1, frequency_width);  //Setup
 	fL2.setup (order, samplingrate, centre_frequency_L2, frequency_width);
 	fL1.reset();  //reset
 	fL2.reset();
-
-	//this should be in run()
-	while(1){
-		i = readData();
-//		outW1 = ADCreader::filter(i, &fW1); //gives a single frequency output of fW1 if it exists
-//		outW2 = ADCreader::filter(i, &fW2); //gives a single frequency output of fW2 if it exists
-//		outL1 = ADCreader::filter(i, &fL1); //gives a single frequency output of fL1 if it exists
-		float b = fL2.filter(i);
-printf("Input=%f\n", b);
+	float b = fL2.filter(readData());
+	printf("Input=%f\n", b);
 }
 void adcReader2::quit()
 {
