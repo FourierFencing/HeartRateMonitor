@@ -43,7 +43,7 @@ void loadSpiDriver()
  
 void spiSetup (int spiChannel)
 {
-    if ((myFd = SPISetup (spiChannel, 1000000)) < 0)
+    if ((myFd = SPISetup (spiChannel, 4000000)) < 0)
     {
         fprintf (stderr, "Can't open the SPI bus: %s\n", strerror (errno)) ;
         exit (EXIT_FAILURE) ;
