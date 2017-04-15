@@ -138,6 +138,9 @@ int adcReader2::hasSample() //saftey function ensures we are always behind input
 			   // then pOut index is hte same as pIn
 }
 
+int adcReader2::visualizeIIR()
+{
+}
 void adcReader2::quit()
 {
 	running = false;
