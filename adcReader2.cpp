@@ -32,7 +32,7 @@ static int myFd ;
 // -ce1  = spi analogChannel 1, default:  0
 // -d   = differential analogChannel input, default: single ended
  
-void adcReader2::loadSpiDriver() //not in header
+void adcReader2::loadSpiDriver() //in header
 {
     if (system("gpio load spi") == -1)
     {
@@ -41,7 +41,7 @@ void adcReader2::loadSpiDriver() //not in header
     }
 }
  
-void adcReader2::spiSetup (int spiChannel) //not in header
+void adcReader2::spiSetup (int spiChannel) //in header
 {
     if ((myFd = SPISetup (spiChannel, 1000000)) < 0)
     {
@@ -50,7 +50,7 @@ void adcReader2::spiSetup (int spiChannel) //not in header
     }
 }
  
-int adcReader2::myAnalogRead(int spiChannel,int channelConfig,int analogChannel) //not in header
+int adcReader2::myAnalogRead(int spiChannel,int channelConfig,int analogChannel) //in header
 {
     if(analogChannel<0 || analogChannel>7)
         return -1;
