@@ -37,7 +37,7 @@ private:
 	QVBoxLayout  *vLayout;  // vertical layout
 	QHBoxLayout  *hLayout;  // horizontal layout
 
-	static const int plotDataSize = 300;
+	static const int plotDataSize = 20;
 
 	// data arrays for the plot
 	double xData[plotDataSize];
