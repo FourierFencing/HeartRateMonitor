@@ -7,7 +7,6 @@
 /*
  * adcRead:
  *	Return the analog value of the given pin
- *********************************************************************************
  */
 
 static int adcRead (struct wiringPiNodeStruct *node, int pin)
@@ -30,9 +29,8 @@ static int adcRead (struct wiringPiNodeStruct *node, int pin)
 
 /*
  * mSetup:
- *	Create a new wiringPi device node for an mcp3004 on the Pi's
+ *	Create a new wiringPi device node for an mcp3008 on the Pi's
  *	SPI interface.
- *********************************************************************************
  */
 
 int adcSetup (const int pinBase, int spiChannel)
