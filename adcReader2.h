@@ -58,6 +58,10 @@ protected:
 private: 
 	bool running;
 	void pabort(const char *s);
+	//functions that are used inside the .cpp
+	void loadSpiDriver();
+	void spiSetup (int spiChannel);
+	int myAnalogRead(int spiChannel,int channelConfig,int analogChannel); //not in header
 	
 	//file descriptor on the SPI interface 
 	int fd;
