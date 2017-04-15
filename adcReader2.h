@@ -52,7 +52,7 @@ public:
 	void run();
 
 protected: 
-	int readData(); //shouldn't be able to do this from the outside
+//	int readData(); //shouldn't be able to do this from the outside
 
 
 private: 
@@ -62,7 +62,9 @@ private:
 	void loadSpiDriver();
 	void spiSetup (int spiChannel);
 	int myAnalogRead(int spiChannel,int channelConfig,int analogChannel); //not in header
-	
+	void testing();
+	int readData(); //shouldn't be able to do this from the outside
+
 	//file descriptor on the SPI interface 
 	int fd;
 	//this was not used and replaced with a local variable of myFd

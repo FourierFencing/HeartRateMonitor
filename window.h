@@ -46,7 +46,9 @@ private:
 	double gain;
 	int count;
 
-	adcReader2 *adcReader;//adcReader2 is the class thingy
+	adcReader2 *adcReader;//adcReader is a pointer of type adcReader2 
+	//this is the same as going
+	//int *sample
 };
 
 #endif // WINDOW_H

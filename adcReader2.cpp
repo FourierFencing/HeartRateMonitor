@@ -65,9 +65,17 @@ adcReader2::adcReader2() //added to header
  //do i need void? - don't think i need void because this is set-up that excecuted at startup
 {
 
+	int ret = 0;
+	// set up ringbuffer
+	samples = new int[MAX_SAMPLES];
+	// pointer for incoming data
+	pIn = samples;
+	// pointer for outgoing data
+	pOut = samples;
+
 	wiringPiSetup();
 	spiSetup(0);
-//	running = TRUE;
+	running = TRUE;
 	fprintf(stderr,"We are running!\n");
 	
 }
@@ -77,29 +85,34 @@ int adcReader2::readData() //protected in header! therefore needs :: to excecute
 	return myAnalogRead(0, 8, 1-1);
 }
 
+//void adcReader2::testing()
+//{
+//	fprintf(stderr,"We can run functions\n"); //
+//}
 
 //REQUIRED THREADY THINGS
 void adcReader2::run()
 {
-	running = true;
 
-	fprintf(stderr,"We are running!\n");
-
+	//fprintf(stderr,"We are running!\n");
+	
 	while(running) { 
 
 		//apprently we aren't gonna check to see if we see anything
-
+		
 		int value = readData();//get a value from a buffer
 		// realistically we could easily just call myAnalogRead here
 		//is there anyreason why we don't (other than to obufscate the code?)
-		printf("%i",value);
-	
+		printf("%i\n",value);
+//		testing();
 		*pIn = value; //put input value in current position pointed to by Pin
 		if (pIn == (&samples[MAX_SAMPLES-1]))//if the sample index is at end of buffer
+			//(sizeof(samples)/sizeof(*samples))
 			pIn = samples; //start at beginning of buffer again
 		else
 			pIn++;		//else, go to next index
 		//no end if needed?
+	//	fprintf(stderr,"We got a sample! %i\n",value); //check to see what sample we get (and if we get it)
 	}
 	//we never opened fd or sysfs_fd, so we don't need to close
 }

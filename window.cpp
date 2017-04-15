@@ -43,12 +43,19 @@ Window::Window() : gain(5), count(0)
 	// At the moment it doesn't do anything else than
 	// running in an endless loop and which prints out "tick"
 	// every second.
+//	fprintf(stderr,"I am about to create adcReader2\n");//stderror prints to a different output than default printf 
 	adcReader = new adcReader2();
 	adcReader->start();
+	//debug: 
+//	fprintf(stderr,"I just created adcReader2\n"); 
+	//end debug;
 }
 
  Window::~Window() {
 	// tells the thread to no longer run its endless loop
+	//debug: 
+//	fprintf(stderr,"I'm deleting adcReader\n");
+	//end debug;
 	adcReader->quit();
 	// wait until the run method has terminated
 	adcReader->wait();
