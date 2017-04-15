@@ -13,8 +13,7 @@
 #include <wiringPi.h>
 
 
-#include <Iir.h>
-#include <Butterworth.h>
+#include "Iir.h"
 
 #include "SPISetup.h"
 #include "ADCSetup.h"
