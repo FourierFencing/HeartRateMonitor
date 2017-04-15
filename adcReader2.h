@@ -41,10 +41,12 @@ class adcReader2 : public QThread
 
 public:
 	adcReader2(); //this class is now public to use
-	
+	//visualizeIIR();
 	//ring buffer functions
 	int hasSample();
 	int getSample();
+	//IIR ring buffer function
+	int getIIRSample();
  //these should really be the only things that get called from the outside
 //I don't know why other people have this again
 //  public:  //comment out to see what happens
@@ -84,6 +86,20 @@ private:
 	int *pOut;
 	//pOut is the address of the current output index of the ring buffer
 	//*pOut is the value at that address (output value) 
+
+// data collected
+        int *samplesIIR; //actually is used to store each data value
+        //this is our ring buffer
+
+        // pointer to ringbuffer
+        int *pInIIR; 
+        //pIn is the address of the current input index of the ring buffer
+        //*pIn is the value at that address
+
+        int *pOutIIR;
+        //pOut is the address of the current output index of the ring buffer
+        //*pOut is the value at that address (output value) 
+
 
 	//if pIn = pOut, then our current output index has caught up to our input index
 	// this is why we use hasSample() as a condition

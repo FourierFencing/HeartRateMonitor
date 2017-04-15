@@ -15,8 +15,8 @@ Window::Window() : count(0)  //why do we still need gain? We can take it off
 	knob_gain = new QwtKnob;
 	setting_gain = 0;
 	knob_gain->setScale(0, 7);
-	knob_gain->setValue(0);
-	connect( knob_gain, SIGNAL(valueChanged(double)), SLOT(setGain(double)) );
+	knob_gain->setValue(gain);
+	//connect( knob_gain, SIGNAL(valueChanged(double)), SLOT(setGain(double)) );
 
 	// Set up the length knob.
 	knob_length = new QwtKnob;
@@ -80,7 +80,6 @@ Window::Window() : count(0)  //why do we still need gain? We can take it off
 
 	// set up the layout - knob above thermometer
 	vLayout = new QVBoxLayout;
-	vLayout->addWidget(knob);
 	vLayout->addWidget(knob_gain);
 	vLayout->addWidget(knob_length);
 	vLayout->addWidget(button_dft);
@@ -124,10 +123,10 @@ void Window::timerEvent( QTimerEvent * )
 		if( plotBusy ) return;
 		plotBusy = true;
 		
-		if( plotResize ){
-		resizePlots();
-		plotResize = false;
-		}
+//		if( plotResize ){
+//		resizePlots();
+//		plotResize = false;
+//		}
 
 		if( plotResample ){
 		resamplePlots();
@@ -135,6 +134,8 @@ void Window::timerEvent( QTimerEvent * )
 		}
 
         double inVal = 0;
+	double inVal2 = 0;
+
         while(adcReader->hasSample())
 //	{
         inVal = gain * (adcReader->getSample()); //gets sample from the buffer
@@ -149,7 +150,7 @@ void Window::timerEvent( QTimerEvent * )
         	curve->setSamples(xData, yData, plotDataSize);  
         	plot->replot();
 
-		inVal2 = gain * (adcReader->visualizeIIR()); //gets sample from the buffer
+	inVal2 = gain * (adcReader->getIIRSample()); //gets sample from the buffer
 		++count;
         	// add the new input to the plot
         	memmove( yData2, yData2+1, (plotDataSize-1) * sizeof(double) );//shift ydata buffer?
@@ -195,7 +196,7 @@ void Window::timerEvent( QTimerEvent * )
 		fftw_free(datafc2);
 
 		curve->setSamples(dft_f, dft_adc, freqs);
-		if( !setting_toggle ) curve2->setSamples(dft_f, dft_c2, freqs);
+		if( !setting_toggle ) curve2->setSamples(dft_f, dft_iir, freqs);
 		}else{
 		curve->setSamples(xData, yData, plotDataSize);
 		if( !setting_toggle ) curve2->setSamples(xData, yData2, plotDataSize);
@@ -294,17 +295,22 @@ void Window::resamplePlots(  ){
 	}
 }
 
+//void Window::setGain(double gain)
+//{
+//	// Convert selection and update.
+//	uint8_t g = (uint8_t)(gain*7.0/10.0);
+//	if( g != setting_gain ){
+//		// Update filter selection.
+//		setting_gain = g;
+//		adcreader->setGain(g, 0);
+//		adcreader->setGain(g, 1);
+//		fprintf(stderr, "gain selection: %d\n", g);
+//	}
+//}
+
 void Window::setGain(double gain)
 {
-	// Convert selection and update.
-	uint8_t g = (uint8_t)(gain*7.0/10.0);
-	if( g != setting_gain ){
-		// Update filter selection.
-		setting_gain = g;
-		adcreader->setGain(g, 0);
-		adcreader->setGain(g, 1);
-		fprintf(stderr, "gain selection: %d\n", g);
-	}
+	this->gain = gain;
 }
 
 void Window::setLength(double length){
@@ -319,19 +325,19 @@ void Window::setLength(double length){
 	}
 }
 
-void Window::dftMode(int state){
-	fprintf(stderr, "dft mode: toggle\n");
-	dft_on = !dft_on;
-}
+//void Window::dftMode(int state){
+//	fprintf(stderr, "dft mode: toggle\n");
+//	dft_on = !dft_on;
+//}
 
-void Window::IIRMode(int state){
-	fprintf(stderr, "IIR Values: toggle\n");
-	setting_toggle = !setting_toggle;
+//void Window::IIRMode(int state){
+//	fprintf(stderr, "IIR Values: toggle\n");
+//	setting_toggle = !setting_toggle;
 	// if( setting_toggle ){
 	// 	adcreader->visualizeIIR(true, 1);
 	// }else{
 	// 	adcreader->visualizeIIR(false, 1);
 	// }
 	// plotResample = true;
-}
+//}
 

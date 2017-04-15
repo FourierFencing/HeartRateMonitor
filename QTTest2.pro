@@ -8,7 +8,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = QwtTest
 
-LIBS += -lqwt -lm -lbcm2835 -lrt -lwiringPi
+LIBS += -lqwt -lm -lbcm2835 -lrt -lwiringPi -lfftw3 -liir
 
 HEADERS += window.h ADCSetup.h adcReader2.h SPISetup.h
 

@@ -7,6 +7,7 @@
 #include <qwt/qwt_plot_curve.h>
 
 #include <QBoxLayout>
+#include <QCheckBox>
 
 #include "adcReader2.h"
 
@@ -22,8 +23,8 @@ public:
 	~Window();
 
 	void timerEvent( QTimerEvent * );
-	void resizePlots(  );
-	void resamplePlots(  );
+//	void resizePlots();
+	void resamplePlots();
 
 public slots:
 	void setGain(double gain);
@@ -55,7 +56,7 @@ private:
 	
 	uint8_t setting_gain;
 	double setting_length; // The length of the plot in seconds.
-	bool setting_1c;
+	bool setting_toggle;
 	bool plotResize;       // Orders the update thread to resize plot.
 	bool plotResample;       // Orders the update thread to resize plot.
 	double plotFreq;
@@ -72,6 +73,7 @@ private:
 	double* dft_iir;
 	bool dft_on;
 
+	double gain;
 	int count;
 
 	adcReader2 *adcReader;//adcReader is a pointer of type adcReader2 
