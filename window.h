@@ -22,28 +22,56 @@ public:
 	~Window();
 
 	void timerEvent( QTimerEvent * );
+	void resizePlots(  );
+	void resamplePlots(  );
 
 public slots:
 	void setGain(double gain);
+	void setLength(double length);
+	void dftMode(int state);
+	void IIRMode(int state);
 
 // internal variables for the window class
 private:
-	QwtKnob      *knob;
-	QwtThermo    *thermo;
+	QwtKnob      *knob_gain;
+	QwtKnob      *knob_length;
+	QCheckBox    *button_dft;
+	QCheckBox    *button_toggle;
 	QwtPlot      *plot;
+	QwtPlot      *plot2;
 	QwtPlotCurve *curve;
+	QwtPlotCurve *curve2;
 
 	// layout elements from Qt itself http://qt-project.org/doc/qt-4.8/classes.html
 	QVBoxLayout  *vLayout;  // vertical layout
+	QVBoxLayout  *vLayout2;  // vertical layout2
 	QHBoxLayout  *hLayout;  // horizontal layout
 
-	static const int plotDataSize = 300;
+	// static const int plotDataSize = 300;
+
+	// // data arrays for the plot
+	// double xData[plotDataSize];
+	// double yData[plotDataSize];
+	
+	uint8_t setting_gain;
+	double setting_length; // The length of the plot in seconds.
+	bool setting_1c;
+	bool plotResize;       // Orders the update thread to resize plot.
+	bool plotResample;       // Orders the update thread to resize plot.
+	double plotFreq;
+	volatile bool plotBusy; // The plot is in the process of bing manipulated. 
+	uint32_t plotDataSize; // The number of samples.
 
 	// data arrays for the plot
-	double xData[plotDataSize];
-	double yData[plotDataSize];
+	double* xData;
+	double* yData;
+	double* yData2;
 
-	double gain;
+	double* dft_f;
+	double* dft_adc;
+	double* dft_iir;
+	bool dft_on;
+
 	int count;
 
 	adcReader2 *adcReader;//adcReader is a pointer of type adcReader2 
