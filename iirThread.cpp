@@ -51,13 +51,16 @@ iirThread :: iirThread()
 
 void iirThread::run()
 {
-  while(running){
-  float valueIIR = fL.filter(adcReader2->getSample());
-  *pInIIR = valueIIR;                            //put input value in current position pointed to by Pin
-  if (pInIIR == (&samplesIIR[MAX_SAMPLES-1])) //if the sample index is at end of buffer
-    pInIIR = samplesIIR;                      //start at beginning of buffer again
-	else
-		pInIIR++;                                 //else, go to next index
+	while(running){
+		if(adcReader->hasSample()) //if we've not caught up with adcReader (pOut != pIn) then we take a sample
+	  	{
+			float valueIIR = fL.filter(adcReader->getSample()); //pointer to class is set up as adcReader in our .h, NOT adcReader2
+			*pInIIR = valueIIR;                            //put input value in current position pointed to by Pin
+			if (pInIIR == (&samplesIIR[MAX_SAMPLES-1])) //if the sample index is at end of buffer
+			  	pInIIR = samplesIIR;                      //start at beginning of buffer again
+			else
+				pInIIR++;                                 //else, go to next index
+	  	}
 	}
 }
 
