@@ -10,7 +10,7 @@ TARGET = QwtTest
 
 LIBS += -lqwt -lm -lbcm2835 -lrt -lwiringPi -lfftw3 -liir
 
-HEADERS += window.h ADCSetup.h adcReader2.h SPISetup.h
+HEADERS += window.h ADCSetup.h adcReader2.h SPISetup.h iirThread.h
 
-SOURCES += main.cpp window.cpp ADCSetup.cpp adcReader2.cpp SPISetup.cpp
+SOURCES += main.cpp window.cpp ADCSetup.cpp adcReader2.cpp SPISetup.cpp iirThread.cpp
 

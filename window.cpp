@@ -1,107 +1,116 @@
 #include "window.h"
 #include "adcReader2.h"
+#include "iirThread.h"
 
-#include <algorithm> // DST 
-#include <cmath>
-#include <complex.h> // Add complex number support
-#include <fftw3.h>  // for fourier transforms
+//#include <algorithm> // DST 
+//#include <cmath>
+//#include <complex.h> // Add complex number support
+//#include <fftw3.h>  // for fourier transforms
 
 
-Window::Window() : count(0)  //why do we still need gain? We can take it off
+Window::Window() : gain(5), count(0)  //why do we still need gain? We can take it off
 {
-	//adcReader2->setup(); //set-up adcReader2 -:- do this from adcReader2
-	
+//	fprintf(stderr,"FUCKING HELP\n");
+//	adcReader2->setup(); //set-up adcReader2 -:- do this from adcReader2
+
 	// Set up the gain knob.
-	knob_gain = new QwtKnob;
-	setting_gain = 0;
-	knob_gain->setScale(0, 7);
-	knob_gain->setValue(gain);
+	//knob_gain = new QwtKnob;
+	//setting_gain = 0;
+	//knob_gain->setScale(0, 7);
+	//knob_gain->setValue(gain);
 	//connect( knob_gain, SIGNAL(valueChanged(double)), SLOT(setGain(double)) );
 
 	// Set up the length knob.
-	knob_length = new QwtKnob;
-	setting_length = 5.0;
-	knob_length->setScale(1, 10);
-	knob_length->setValue(5);
-	connect( knob_length, SIGNAL(valueChanged(double)), SLOT(setLength(double)) );
+	//knob_length = new QwtKnob;
+	//setting_length = 5.0;
+	//knob_length->setScale(1, 10);
+	//knob_length->setValue(5);
+	//connect( knob_length, SIGNAL(valueChanged(double)), SLOT(setLength(double)) );
 	// set up the initial plot data
 
 	// DFT button.
-	button_dft = new QCheckBox("Frequency Spectrum");
-	dft_f = new double[1];
-	dft_adc = new double[1];
-	dft_iir = new double[1];
-	dft_on = false;
-	connect( button_dft, SIGNAL(stateChanged(int)), SLOT(dftMode(int)) );
+	//button_dft = new QCheckBox("Frequency Spectrum");
+	//dft_f = new double[1];
+	//dft_adc = new double[1];
+	//dft_iir = new double[1];
+	//dft_on = false;
+	//connect( button_dft, SIGNAL(stateChanged(int)), SLOT(dftMode(int));
+
 	for( int index=0; index<plotDataSize; ++index )
 	{
-		xData[index] = index;
-		yData[index] = gain * 1;
+		adc_xData[index] = index;
+		adc_yData[index] = gain * 1;
+		iir_xData[index] = index;
+		iir_yData[index] = gain * 1;
 	}
-
+//	fprintf(stderr, "waddup bitch\n");
 	// Toggle between IIR values and ADC values
-	button_toggle = new QCheckBox("IIR values");
-	setting_toggle = false;
-	connect( button_toggle, SIGNAL(stateChanged(int)), SLOT(IIRMode(int)) );
-	
+	//button_toggle = new QCheckBox("IIR values");
+	//setting_toggle = false;
+	//connect( button_toggle, SIGNAL(stateChanged(int)), SLOT(IIRMode(int)) );
+
 	// Plot data initalizatqframeion.
-	plotResize = false;
-	plotResample = false;
-	plotFreq = 8.333333333;
-	plotDataSize = 41;
-	
-	xData = new double[plotDataSize];
-	yData = new double[plotDataSize];
-	yData2 = new double[plotDataSize];
-	for( uint32_t index = 0; index < plotDataSize; index+= 1 ){
-		xData[index] = (plotDataSize - index - 1) * ( setting_length / (plotDataSize - 1.0) );
-		yData[index] = 0;
-		yData2[index] = 0;
-	}
+	//plotResize = false;
+	//plotResample = false;
+	//plotFreq = 8.333333333;
+	//plotDataSize = 41;
+
+	//xData = new double[plotDataSize];
+	//yData = new double[plotDataSize];
+	//yData2 = new double[plotDataSize];
+	//for( uint32_t index = 0; index < plotDataSize; index+= 1 ){
+	//	xData[index] = (plotDataSize - index - 1) * ( setting_length / (plotDataSize - 1.0) );
+	//	yData[index] = 0;
+//		yData2[index] = 0;
+//	}
 
 	//ADC value plot.
-	curve = new QwtPlotCurve("ADC Value Curve");
-	plot = new QwtPlot;
+	adc_curve = new QwtPlotCurve;
+	adc_plot = new QwtPlot;
 	// make a plot curve from the data and attach it to the plot
-	curve->setSamples(xData, yData, plotDataSize);
-	curve->attach(plot);
-	plot->replot();
-	plot->show();
+	adc_curve->setSamples(adc_xData, adc_yData, plotDataSize);
+	adc_curve->attach(adc_plot);
 
+	adc_plot->replot();
+	adc_plot->show();
+//	fprintf(stderr, "am i still alive?\n");
 	//IIR value plot.
-	curve2 = new QwtPlotCurve("IIR Value Curve");
-	plot2 = new QwtPlot;
-	curve2->setSamples(xData, yData, plotDataSize);
-	curve2->attach(plot);
-	plot2->replot();
-	plot2->show();
+	iir_curve = new QwtPlotCurve("IIR Value Curve");
+	iir_plot = new QwtPlot;
+	iir_curve->setSamples(iir_xData, iir_yData, plotDataSize);
+	iir_curve->attach(iir_plot);
+	iir_plot->replot();
+	iir_plot->show();
 
-	plotBusy = false;
+//	plotBusy = false;  //whenfft is calcualting and we're busy, don't plot until done
 
 	// set up the layout - knob above thermometer
-	vLayout = new QVBoxLayout;
-	vLayout->addWidget(knob_gain);
-	vLayout->addWidget(knob_length);
-	vLayout->addWidget(button_dft);
+//	vLayout = new QVBoxLayout;
+//	vLayout->addWidget(knob_gain);
+//	vLayout->addWidget(knob_length);
+//	vLayout->addWidget(button_dft);
 
 	// Plot 1 above Plot 2
-	vLayout2 = new QVBoxLayout;
-	vLayout2->addWidget(plot);
-	vLayout2->addWidget(plot2);
+//	vLayout2 = new QVBoxLayout;
+//	vLayout2->addWidget(plot);
+//	vLayout2->addWidget(plot2);
 
 	// Plots go to the right if knobs.
 	hLayout = new QHBoxLayout;
-	hLayout->addLayout(vLayout);
-	hLayout->addLayout(vLayout2);
+	hLayout->addWidget(adc_plot);
+	hLayout->addWidget(iir_plot);
+//	hLayout->addLayout(vLayout2);
 
 	setLayout(hLayout);
-
+//	setLayout(vLayout2);
 //	fprintf(stderr,"I am about to create adcReader2\n");//stderror prints to a different output than default printf 
-	adcReader = new adcReader2();
-	adcReader->start();
+//	adcReader = new adcReader2();
+//	adcReader->start();
 	//debug: 
 //	fprintf(stderr,"I just created adcReader2\n"); 
 	//end debug;
+	IirThread = new iirThread();
+	IirThread->start();
 }
 
  Window::~Window() {
@@ -109,10 +118,14 @@ Window::Window() : count(0)  //why do we still need gain? We can take it off
 	//debug: 
 //	fprintf(stderr,"I'm deleting adcReader\n");
 	//end debug;
-	adcReader->quit();
+	IirThread->quit();
+//	adcReader->quit();
 	// wait until the run method has terminated
-	adcReader->wait();
-	delete adcReader;
+	IirThread->wait();
+//	adcReader->wait();
+	delete IirThread;
+//	delete adcReader;
+	 
 }
 
 void Window::timerEvent( QTimerEvent * )
@@ -120,46 +133,85 @@ void Window::timerEvent( QTimerEvent * )
 // For test
 
 	// Check we are not modifying the plot more than once at a time (allows for frame skips if processor is busy).
-		if( plotBusy ) return;
-		plotBusy = true;
+	//	if( plotBusy ) return; //doesn't do anything
+	//	plotBusy = true;
 		
 //		if( plotResize ){
 //		resizePlots();
 //		plotResize = false;
 //		}
+		//replots for fft
+		//if( plotResample ){
+		//resamplePlots();
+		//plotResample = false;
+		//}
 
-		if( plotResample ){
-		resamplePlots();
-		plotResample = false;
-		}
-
-        double inVal = 0;
-	double inVal2 = 0;
-
-        while(adcReader->hasSample())
-//	{
-        inVal = gain * (adcReader->getSample()); //gets sample from the buffer
+        int inVal =0;
+	//double inVal2 = 0;
+	count = 0;
+//	int plot_buffer[plotDataSize];
+     while((IirThread->hasIIRSample())) //remains true while we're not at end of buffer
+	{
+        inVal = gain * (IirThread->getIIRSample()); //gets sample from the buffer
+//	count++;
+//	plot_buffer[count%plotDataSize] = inVal; 
+	}
+//	if (count > plotDataSize) fprintf(stderr,"too much data\n");
 		//currently it's not very complicated and readData is just a function without a class. 
 		//double inVal = gain * adcReader2->readData(); //readData() is a function of adcReader2
-		++count;
+		//++count;
 		//inVal = (1.25 + (1.25 * (inVal/32767)) - 0.75)/0.00125 - 502.5;
-	
+//		fprintf(stderr,"am i here?\n");
         	// add the new input to the plot
-        	memmove( yData, yData+1, (plotDataSize-1) * sizeof(double) );//shift ydata buffer?
-        	yData[plotDataSize-1] = inVal; //actual data value incoming
-        	curve->setSamples(xData, yData, plotDataSize);  
-        	plot->replot();
+        	memmove( iir_yData, iir_yData+1, (plotDataSize-1) * sizeof(double) );//shift ydata buffer?
+        	
+		iir_yData[plotDataSize-1] = inVal; //actual data value incoming
+//		for(int i=count; i>=0;i--){
+//		yData[plotDataSize-1-i] = plot_buffer[count-i];
+//		}
+	     	iir_curve->setSamples(iir_xData, iir_yData, plotDataSize);  
+		
+       // fprintf(stderr,"starting plot");
+	iir_plot->replot();
+	
+	
 
-	inVal2 = gain * (adcReader->getIIRSample()); //gets sample from the buffer
+     while((IirThread->hasAdcSample())) //remains true while we're not at end of buffer
+	{
+        inVal = gain * (IirThread->getAdcSample()); //gets sample from the buffer
+//	count++;
+//	plot_buffer[count%plotDataSize] = inVal; 
+	}
+//	if (count > plotDataSize) fprintf(stderr,"too much data\n");
+		//currently it's not very complicated and readData is just a function without a class. 
+		//double inVal = gain * adcReader2->readData(); //readData() is a function of adcReader2
+		//++count;
+		//inVal = (1.25 + (1.25 * (inVal/32767)) - 0.75)/0.00125 - 502.5;
+//		fprintf(stderr,"am i here?\n");
+        	// add the new input to the plot
+        	memmove( adc_yData, adc_yData+1, (plotDataSize-1) * sizeof(double) );//shift ydata buffer?
+        	
+		adc_yData[plotDataSize-1] = inVal; //actual data value incoming
+//		for(int i=count; i>=0;i--){
+//		yData[plotDataSize-1-i] = plot_buffer[count-i];
+//		}
+	     	adc_curve->setSamples(adc_xData, adc_yData, plotDataSize);  
+		
+       // fprintf(stderr,"starting plot");
+	adc_plot->replot();
+	
+//	fprintf(stderr,"finished plot");
+
+/*  	inVal2 = gain * (adcReader->getIIRSample()); //gets sample from the buffer
 		++count;
         	// add the new input to the plot
-        	memmove( yData2, yData2+1, (plotDataSize-1) * sizeof(double) );//shift ydata buffer?
+ 	      	memmove( yData2, yData2+1, (plotDataSize-1) * sizeof(double) );//shift ydata buffer?
         	yData2[plotDataSize-1] = inVal2; //actual data value incoming
         	curve->setSamples(xData, yData2, plotDataSize);  
         	plot->replot();
 
 
-		if( dft_on ){
+		if( dft_on ){ //everything below here plots frequency domain instead of time domain
 		// Some variables.
 		fftw_plan dft;
 		uint32_t freqs = plotDataSize / 2 + 1;
@@ -196,16 +248,16 @@ void Window::timerEvent( QTimerEvent * )
 		fftw_free(datafc2);
 
 		curve->setSamples(dft_f, dft_adc, freqs);
-		if( !setting_toggle ) curve2->setSamples(dft_f, dft_iir, freqs);
+		if( !setting_toggle ) curve2->setSamples(dft_f, dft_iir, freqs);//if toggle 1, plot iir 
 		}else{
-		curve->setSamples(xData, yData, plotDataSize);
+		curve->setSamples(xData, yData, plotDataSize);			//else plot adc data
 		if( !setting_toggle ) curve2->setSamples(xData, yData2, plotDataSize);
 		}
 
 		plot->replot();
 		if( !setting_toggle ) plot2->replot();
 
-		plotBusy = false;
+		plotBusy = false; */
 }
 
 
@@ -216,7 +268,7 @@ void Window::timerEvent( QTimerEvent * )
 // 	// for example purposes just change the amplitude of the generated input
 // 	this->gain = gain;
 // }
-
+/*
 void Window::resamplePlots(  ){
 	// Get channel frequency.
 	uint32_t actual_freq = 1000000;
@@ -293,7 +345,7 @@ void Window::resamplePlots(  ){
 			xData[index] = (plotDataSize - index - 1) * scale;
 		}
 	}
-}
+}*/
 
 //void Window::setGain(double gain)
 //{
@@ -312,7 +364,7 @@ void Window::setGain(double gain)
 {
 	this->gain = gain;
 }
-
+/*
 void Window::setLength(double length){
 	// Convert selection and update.
 	uint8_t select = (uint8_t)(length * 9.0 / 10.0 + 1.0);
@@ -325,19 +377,19 @@ void Window::setLength(double length){
 	}
 }
 
-//void Window::dftMode(int state){
-//	fprintf(stderr, "dft mode: toggle\n");
-//	dft_on = !dft_on;
-//}
+void Window::dftMode(int state){
+	fprintf(stderr, "dft mode: toggle\n");
+	dft_on = !dft_on;
+}
 
-//void Window::IIRMode(int state){
-//	fprintf(stderr, "IIR Values: toggle\n");
-//	setting_toggle = !setting_toggle;
+void Window::IIRMode(int state){
+	fprintf(stderr, "IIR Values: toggle\n");
+	setting_toggle = !setting_toggle;
 	// if( setting_toggle ){
 	// 	adcreader->visualizeIIR(true, 1);
 	// }else{
 	// 	adcreader->visualizeIIR(false, 1);
 	// }
 	// plotResample = true;
-//}
-
+}
+*/
