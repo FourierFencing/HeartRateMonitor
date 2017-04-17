@@ -23,6 +23,8 @@ public:
 	//ring buffer functiony stuff
   int hasIIRSample();
 	int getIIRSample();
+	  int hasAdcSample();
+	int getAdcSample();
 	// thread stuff
 	void quit();
 	void run();
@@ -45,14 +47,17 @@ private:
 
 
 	int *samplesIIR; //actually is used to store each data value
+	int *samplesAdc; //actually is used to store each data value
 	//this is our ring buffer
 
 	// pointer to ringbuffer
 	int *pInIIR; 
+	int *pInAdc;
 	//pIn is the address of the current input index of the ring buffer
 	//*pIn is the value at that address
 
 	int *pOutIIR;
+	int *pOutAdc;
 	//pOut is the address of the current output index of the ring buffer
 	//*pOut is the value at that address (output value) 
 
