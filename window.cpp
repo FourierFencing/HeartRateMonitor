@@ -1,5 +1,6 @@
 #include "window.h"
 #include "adcReader2.h"
+#include "iirThread.h"
 
 //#include <algorithm> // DST 
 //#include <cmath>
@@ -106,6 +107,8 @@ Window::Window() : gain(5), count(0)  //why do we still need gain? We can take i
 	//debug: 
 //	fprintf(stderr,"I just created adcReader2\n"); 
 	//end debug;
+	IirThread = new iirThread();
+	IirThread->start();
 }
 
  Window::~Window() {
@@ -113,10 +116,14 @@ Window::Window() : gain(5), count(0)  //why do we still need gain? We can take i
 	//debug: 
 //	fprintf(stderr,"I'm deleting adcReader\n");
 	//end debug;
+	IirThread->quit();
 	adcReader->quit();
 	// wait until the run method has terminated
+	IirThread->wait();
 	adcReader->wait();
+	delete IirThread;
 	delete adcReader;
+	 
 }
 
 void Window::timerEvent( QTimerEvent * )
@@ -141,9 +148,9 @@ void Window::timerEvent( QTimerEvent * )
 	//double inVal2 = 0;
 	count = 0;
 //	int plot_buffer[plotDataSize];
-     while((adcReader->hasSample())) //remains true while we're not at end of buffer
+     while((IirThread->hasSample())) //remains true while we're not at end of buffer
 	{
-        inVal = gain * (adcReader->getSample()); //gets sample from the buffer
+        inVal = gain * (IirThread->getSample()); //gets sample from the buffer
 //	count++;
 //	plot_buffer[count%plotDataSize] = inVal; 
 	}
