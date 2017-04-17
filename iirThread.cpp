@@ -46,9 +46,16 @@ iirThread :: iirThread()
   pInIIR = samplesIIR;
   //pointer for outgoing data (IIR)
   pOutIIR = samplesIIR;
+	//set up other ringbuffer (Adc)
+  samplesAdc = new int[MAX_SAMPLES];
+  // pointer for incoming data (Adc)
+  pInAdc = samplesAdc;
+  //pointer for outgoing data (Adc)
+  pOutAdc = samplesAdc;
+	
   running = TRUE;
-		adcReader = new adcReader2();
-		adcReader->start();
+		adcReader = new adcReader2(); //needed to move this from window to here
+		adcReader->start();		//don't think we can operate on one thread from two differetn threads or someting
 
 	fprintf(stderr,"We are running iirThread!\n");
 }
@@ -64,6 +71,15 @@ void iirThread::run()
 //			fprintf(stderr,"stil here\n");
 			int adcValue = adcReader->getSample();
 			float valueIIR = fL.filter(adcValue); //pointer to class is set up as adcReader in our .h, NOT adcReader2
+			
+			*pInAdc = adcValue;                            //put input CLEAN value in current position pointed to by Pin
+//			fprintf(stderr,"On this day we fight for glory\n");
+			if (pInAdc == (&samplesAdc[MAX_SAMPLES-1])) //if the sample index is at end of buffer
+			  	pInAdc = samplesAdc;                      //start at beginning of buffer again
+			else
+				pInAdc++;                                 //else, go to next index
+//			fprintf(stderr,"still running\n");	  	
+			
 			*pInIIR = valueIIR;                            //put input value in current position pointed to by Pin
 //			fprintf(stderr,"On this day we fight for glory\n");
 			if (pInIIR == (&samplesIIR[MAX_SAMPLES-1])) //if the sample index is at end of buffer
@@ -112,3 +128,24 @@ int iirThread::getIIRSample()
 	//printf("IIR samples: %d\n", valueIIR);
 	return valueIIR;
 }
+int iirThread::hasAdcSample() //saftey function ensures we are always behind input
+{
+	return (pOutAdc!=pInAdc); //if we already have the current input sample
+			   // then pOut index is hte same as pIn
+}
+int iirThread::getAdcSample()
+{
+	assert(pOutAdc!=pInAdc); //ensure that we've not caught up to input samples
+       //has sample should avoid this
+	int valueAdc = *pOutAdc; //set local value variable to get the value
+                      //stored in the address pointed by pOut.
+
+	if(pOutAdc == (&samplesAdc[MAX_SAMPLES-1]))//if we've reached end
+		pOutAdc = samplesAdc;         //start from beginning
+	else
+		pOutAdc++;                 //or don't
+
+	//printf("IIR samples: %d\n", valueIIR);
+	return valueAdc;
+}
+
