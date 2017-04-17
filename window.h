@@ -39,10 +39,10 @@ private:
 //	QwtKnob      *knob_length;
 //	QCheckBox    *button_dft;
 //	QCheckBox    *button_toggle;
-	QwtPlot      *plot;
-//	QwtPlot      *plot2;
-	QwtPlotCurve *curve;
-//	QwtPlotCurve *curve2;
+	QwtPlot      *adc_plot;
+	QwtPlot      *iir_plot;
+	QwtPlotCurve *adc_curve;
+	QwtPlotCurve *iir_curve;
 
 	// layout elements from Qt itself http://qt-project.org/doc/qt-4.8/classes.html
 	QVBoxLayout  *vLayout;  // vertical layout
@@ -52,9 +52,10 @@ private:
 	static const int plotDataSize = 300;
 
 	// // data arrays for the plot
-	double xData[plotDataSize];
-	double yData[plotDataSize];
-	
+	double adc_xData[plotDataSize];
+	double adc_yData[plotDataSize];
+	double iir_xData[plotDataSize];
+	double iir_yData[plotDataSize];
 //	uint8_t setting_gain;
 //	double setting_length; // The length of the plot in seconds.
 //	bool setting_toggle;
@@ -77,7 +78,7 @@ private:
 	double gain;
 	int count;
 
-	adcReader2 *adcReader;//adcReader is a pointer of type adcReader2 
+	//adcReader2 *adcReader;//adcReader is a pointer of type adcReader2 
 	iirThread *IirThread;//IirThread is a pointer of type iirThread
 	//this is the same as going
 	//int *sample
