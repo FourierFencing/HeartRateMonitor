@@ -10,6 +10,7 @@
 //#include <QCheckBox>
 
 #include "adcReader2.h"
+#include "iirThread.h"
 
 // class definition 'Window'
 class Window : public QWidget
@@ -77,6 +78,7 @@ private:
 	int count;
 
 	adcReader2 *adcReader;//adcReader is a pointer of type adcReader2 
+	iirThread *IirThread;//IirThread is a pointer of type iirThread
 	//this is the same as going
 	//int *sample
 };
