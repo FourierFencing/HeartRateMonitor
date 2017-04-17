@@ -29,10 +29,11 @@ iirThread :: iirThread()
   const int order = 3;  //order of 3 for the filter
   Iir::Butterworth::BandPass<order> fL;  //using a Bandpass filter to detect frequencies from fencer's lame
   Iir::Butterworth::BandPass<order> fW;  //using a Bandpass filter to detect frequencies from fencer's lame
-  const float samplingrate = 100000; // Sample rate in Hz
-  const float centre_frequency_L = 10500; //The centre frequency of the fencer's lame
-  const float centre_frequency_W = 13500; //The centre frequency of the fencer's weapon guard
-  const float frequency_width = 1000;  //Width of both frequencies
+	//these are set in header now
+ // const float samplingrate = 100000; // Sample rate in Hz
+ // const float centre_frequency_L = 10500; //The centre frequency of the fencer's lame
+ // const float centre_frequency_W = 13500; //The centre frequency of the fencer's weapon guard
+ // const float frequency_width = 1000;  //Width of both frequencies
   fL.setup (order, samplingrate, centre_frequency_L, frequency_width);  //Setup
   fW.setup (order, samplingrate, centre_frequency_W, frequency_width);
   fL.reset();  //reset
