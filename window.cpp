@@ -38,8 +38,10 @@ Window::Window() : gain(5), count(0)  //why do we still need gain? We can take i
 
 	for( int index=0; index<plotDataSize; ++index )
 	{
-		xData[index] = index;
-		yData[index] = gain * 1;
+		adc_xData[index] = index;
+		adc_yData[index] = gain * 1;
+		iir_xData[index] = index;
+		iir_yData[index] = gain * 1;
 	}
 //	fprintf(stderr, "waddup bitch\n");
 	// Toggle between IIR values and ADC values
@@ -63,22 +65,22 @@ Window::Window() : gain(5), count(0)  //why do we still need gain? We can take i
 //	}
 
 	//ADC value plot.
-	curve = new QwtPlotCurve;
-	plot = new QwtPlot;
+	adc_curve = new QwtPlotCurve;
+	adc_plot = new QwtPlot;
 	// make a plot curve from the data and attach it to the plot
-	curve->setSamples(xData, yData, plotDataSize);
-	curve->attach(plot);
+	adc_curve->setSamples(adc_xData, adc_yData, plotDataSize);
+	adc_curve->attach(adc_plot);
 
-	plot->replot();
-	plot->show();
+	adc_plot->replot();
+	adc_plot->show();
 //	fprintf(stderr, "am i still alive?\n");
 	//IIR value plot.
-	//curve2 = new QwtPlotCurve("IIR Value Curve");
-	//plot2 = new QwtPlot;
-	//curve2->setSamples(xData, yData, plotDataSize);
-	//curve2->attach(plot);
-	//plot2->replot();
-	//plot2->show();
+	iir_curve = new QwtPlotCurve("IIR Value Curve");
+	iir_plot = new QwtPlot;
+	iir_curve->setSamples(iir_xData, iir_yData, plotDataSize);
+	iir_curve->attach(iir_plot);
+	iir_plot->replot();
+	iir_plot->show();
 
 //	plotBusy = false;  //whenfft is calcualting and we're busy, don't plot until done
 
@@ -95,8 +97,8 @@ Window::Window() : gain(5), count(0)  //why do we still need gain? We can take i
 
 	// Plots go to the right if knobs.
 	hLayout = new QHBoxLayout;
-	hLayout->addWidget(plot);
-//	hLayout->addLayout(vLayout);
+	hLayout->addWidget(adc_plot);
+	hLayout->addWidget(iir_plot);
 //	hLayout->addLayout(vLayout2);
 
 	setLayout(hLayout);
@@ -161,16 +163,43 @@ void Window::timerEvent( QTimerEvent * )
 		//inVal = (1.25 + (1.25 * (inVal/32767)) - 0.75)/0.00125 - 502.5;
 //		fprintf(stderr,"am i here?\n");
         	// add the new input to the plot
-        	memmove( yData, yData+1, (plotDataSize-1) * sizeof(double) );//shift ydata buffer?
+        	memmove( iir_yData, iir_yData+1, (plotDataSize-1) * sizeof(double) );//shift ydata buffer?
         	
-		yData[plotDataSize-1] = inVal; //actual data value incoming
+		iir_yData[plotDataSize-1] = inVal; //actual data value incoming
 //		for(int i=count; i>=0;i--){
 //		yData[plotDataSize-1-i] = plot_buffer[count-i];
 //		}
-	     	curve->setSamples(xData, yData, plotDataSize);  
+	     	iir_curve->setSamples(iir_xData, iir_yData, plotDataSize);  
 		
        // fprintf(stderr,"starting plot");
-	plot->replot();
+	iir_plot->replot();
+	
+	
+
+     while((IirThread->hasAdcSample())) //remains true while we're not at end of buffer
+	{
+        inVal = gain * (IirThread->getAdcSample()); //gets sample from the buffer
+//	count++;
+//	plot_buffer[count%plotDataSize] = inVal; 
+	}
+//	if (count > plotDataSize) fprintf(stderr,"too much data\n");
+		//currently it's not very complicated and readData is just a function without a class. 
+		//double inVal = gain * adcReader2->readData(); //readData() is a function of adcReader2
+		//++count;
+		//inVal = (1.25 + (1.25 * (inVal/32767)) - 0.75)/0.00125 - 502.5;
+//		fprintf(stderr,"am i here?\n");
+        	// add the new input to the plot
+        	memmove( adc_yData, adc_yData+1, (plotDataSize-1) * sizeof(double) );//shift ydata buffer?
+        	
+		adc_yData[plotDataSize-1] = inVal; //actual data value incoming
+//		for(int i=count; i>=0;i--){
+//		yData[plotDataSize-1-i] = plot_buffer[count-i];
+//		}
+	     	adc_curve->setSamples(adc_xData, adc_yData, plotDataSize);  
+		
+       // fprintf(stderr,"starting plot");
+	adc_plot->replot();
+	
 //	fprintf(stderr,"finished plot");
 
 /*  	inVal2 = gain * (adcReader->getIIRSample()); //gets sample from the buffer
