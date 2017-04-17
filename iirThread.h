@@ -3,6 +3,7 @@
 
 #include <QThread> //needed for multithreading
 #include <stdint.h> //because we're using uint8_t
+#include "adcReader2.h" 
 
 //The class is started in main program as a thread
 // adcreader -> start();
@@ -57,7 +58,7 @@ private:
   const float centre_frequency_W = 13500; //The centre frequency of the fencer's weapon guard
   const float frequency_width = 1000;  //Width of both frequencies
 	
-	
+	adcReader2 *adcReader;//adcReader is a pointer of type adcReader2 
 };
 
 #endif
