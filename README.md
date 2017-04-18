@@ -44,31 +44,31 @@ Then compile the code
 
 ## Sources
 
-Code adapted from arudino community 
+**Code adapted from arudino community**
 
 -https://github.com/WorldFamousElectronics/PulseSensor_Amped_Arduino
 
 
-Previous projects proved useful
+**Previous projects proved useful**
 
 -https://github.com/tianyiran02/RTEM_weightscale
 
 -https://github.com/katterek/MultiADC
 
 
-Bernd Porr's GitHub also useful
+**Bernd Porr's GitHub also useful**
 
 -https://github.com/berndporr/qwt-example
 
 -https://github.com/berndporr/rpi_AD7705_test_software
 
 
-Bernd Porr's IIR library GitHub 
+**Bernd Porr's IIR library GitHub**
 
 -https://github.com/berndporr/iir1
 
 
-Nice source for SPI
+**Nice source for SPI**
 
 -http://www.raspberry-projects.com/pi/programming-in-c/spi/using-the-spi-interface
 
