@@ -1,7 +1,7 @@
 # Real Time Embedded Programming - Team 8
 
-This is the code to an heart rate monitor project. This project makes use of a Raspberry Pi, a pulse sensor and a MCP3008 ADC to measure the heart rate of a user. An LED pulses with the users heart beat.
-The raw data gotten from the ADC is displayed on QT and the final calculated Beats Per Minute is sent via Bluetooth to an Android Device. The Android code is in a different repo -https://github.com/FourierFencing/fourierfencingclient.
+This is the code to for Fourier Fencing Systems. This project makes use of a Raspberry Pi and a MCP3008 ADC to detect certain frequecies sent from a transmitter. An LED lights up when the frewuency is detected.
+The raw data gotten from the ADC is displayed on QT as well as the IIR frequency component and when a required frequency is detected, a signal is sent via Bluetooth to an Android Device. The Android code is in a different repo -https://github.com/FourierFencing/fourierfencingclient.
 
 
 ## Requirements
