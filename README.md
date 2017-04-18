@@ -1,7 +1,7 @@
 # Real Time Embedded Programming - Team 8
 
 This is the code to an heart rate monitor project. This project makes use of a Raspberry Pi, a pulse sensor and a MCP3008 ADC to measure the heart rate of a user. An LED pulses with the users heart beat.
-The raw data gotten from the ADC is displayed on QT and the final calculated Beats Per Minute is sent via Bluetooth to an Android Device. The Android code is in a different repo ```https://github.com/FourierFencing/fourierfencingclient```.
+The raw data gotten from the ADC is displayed on QT and the final calculated Beats Per Minute is sent via Bluetooth to an Android Device. The Android code is in a different repo -https://github.com/FourierFencing/fourierfencingclient.
 
 
 ## Requirements
@@ -15,13 +15,18 @@ The raw data gotten from the ADC is displayed on QT and the final calculated Bea
 ## Installation
 
 From the RPi, clone this archive:
+
 ```git clone https://github.com/FourierFencing/HeartRateMonitor.git```
 
 Open the directory
+
 ```cd HeartRateMonitor```
 
 Then compile the code
-```qmake```
+
+```qmake QTTest2.pro```
+
+
 ```make```
 
 

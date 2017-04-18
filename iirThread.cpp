@@ -15,26 +15,23 @@
 
 #include "adcReader2.h"
 #include "iirThread.h"
-//almost certainly don't need all these
 
-//this is the IIR class - iirThread.cpp
-//This implements a seperate thread that takes the ADC data and converts it to IIR
-// this might also implement FFT stuff, idk
+//	this is the IIR class - iirThread.cpp
+//	This implements a seperate thread that takes the ADC data and converts it to IIR
+// 	this might also implement FFT stuff, idk
 #define MAX_SAMPLES 65536
 
 iirThread :: iirThread()
 {
-  int ret=0; //noone knows why, but it makes me feel good.
-  
-  //setting up filter stuff
+//	setting up filter stuff
 //  const int order = 3;  //order of 3 for the filter
 //  Iir::Butterworth::BandPass<order> fL; 
- // Iir::Butterworth::BandPass<order> fW;  //using a Bandpass filter to detect frequencies from fencer's lame
-	//these are set in header now
- // const float samplingrate = 100000; // Sample rate in Hz
- // const float centre_frequency_L = 10500; //The centre frequency of the fencer's lame
- // const float centre_frequency_W = 13500; //The centre frequency of the fencer's weapon guard
- // const float frequency_width = 1000;  //Width of both frequencies
+// 	Iir::Butterworth::BandPass<order> fW;  //using a Bandpass filter to detect frequencies from fencer's lame
+//	these are set in header now
+// 	const float samplingrate = 100000; // Sample rate in Hz
+// 	const float centre_frequency_L = 10500; //The centre frequency of the fencer's lame
+// 	const float centre_frequency_W = 13500; //The centre frequency of the fencer's weapon guard
+// 	const float frequency_width = 1000;  //Width of both frequencies
   fL.setup(order, samplingrate, centre_frequency_L, frequency_width);  //Setup
   fW.setup(order, samplingrate, centre_frequency_W, frequency_width);
   fL.reset();  //reset
