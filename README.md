@@ -16,11 +16,11 @@ The raw data gotten from the ADC is displayed on QT as well as the IIR frequency
 
 From the RPi, clone this archive:
 
-```git clone https://github.com/FourierFencing/HeartRateMonitor.git```
+```git clone https://github.com/FourierFencing/Team8-FFS.git```
 
 Open the directory
 
-```cd HeartRateMonitor```
+```cd Team8-FFS```
 
 Then compile the code
 
@@ -34,27 +34,41 @@ Then compile the code
 
 ### Displaying on QT
 
-1. ```startx ./HeartRateMonitor```
+1. ```startx ./Team8-FFS```
 
 ### Displaying on Phone via Bluetooth
 
-1. ```startx ./HeartRateMonitor```
-2. Start the Heart Rate Monitor app on Android device and connect to "raspberry pi"
+1. ```startx ./Team8-FFS```
+2. Start the Fourier Fencing app on Android device and connect to "raspberry pi"
 
 
 ## Sources
 
 Code adapted from arudino community 
+
 -https://github.com/WorldFamousElectronics/PulseSensor_Amped_Arduino
 
+
 Previous projects proved useful
+
 -https://github.com/tianyiran02/RTEM_weightscale
+
 -https://github.com/katterek/MultiADC
 
+
 Bernd Porr's GitHub also useful
+
 -https://github.com/berndporr/qwt-example
+
 -https://github.com/berndporr/rpi_AD7705_test_software
 
+
+Bernd Porr's IIR library GitHub 
+
+-https://github.com/berndporr/iir1
+
+
 Nice source for SPI
+
 -http://www.raspberry-projects.com/pi/programming-in-c/spi/using-the-spi-interface
 
