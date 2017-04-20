@@ -53,7 +53,6 @@ int adcReader2::myAnalogRead(int spiChannel,int channelConfig,int analogChannel)
 }
 
 adcReader2::adcReader2() //added to header
-//	do i need void? - don't think i need void because this is set-up that excecuted at startup
 {
 //	fprintf(stderr,"PLEASE RUN!\n");
 // 	set up ringbuffer (ADC)
@@ -62,14 +61,6 @@ adcReader2::adcReader2() //added to header
 	pIn = samples;
 // 	pointer for outgoing data (ADC)
 	pOut = samples;
-
-//	Testing where to setup IIR buffer. (Decided on setting it up in the IIR Thread)
-//	set up ringbuffer (IIR)
-//  samplesIIR = new int[MAX_SAMPLES];
-//  pointer for incoming data (IIR)
-//  pInIIR = samplesIIR;
-//	pointer for outgoing data (IIR)
-//  pOutIIR = samplesIIR;
 
 
 	wiringPiSetup();
@@ -83,11 +74,6 @@ int adcReader2::readData(int channel) // Reads data from input channel of the AD
 {
 	myAnalogRead(0,CHAN_CONFIG_SINGLE,channel);
 }
-
-//	void adcReader2::testing()
-//	{
-//		fprintf(stderr,"We can run functions\n"); //
-//	}
 
 //	REQUIRED THREADY THINGS
 void adcReader2::run()
